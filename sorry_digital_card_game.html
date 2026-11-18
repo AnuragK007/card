@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Tiny Apology ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:Arial,sans-serif; color:#5c2638;
+  background:linear-gradient(135deg,#160b16,#351322,#702542);
+  overflow-x:hidden;
+}
+button{font:inherit}
+.bg-heart{position:fixed;bottom:-30px;color:#ff9db8;opacity:.18;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-115vh) rotate(35deg);opacity:0}}
+.container{width:min(760px,92%);margin:45px auto 70px;position:relative}
+.card{
+  background:rgba(255,247,250,.97);border-radius:30px;padding:38px 30px;
+  box-shadow:0 25px 90px rgba(255,50,110,.25);text-align:center;
+}
+.screen{display:none;animation:fade .45s ease}.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.heart{font-size:64px;animation:beat 1.3s infinite}
+@keyframes beat{50%{transform:scale(1.15)}}
+h1{font-family:Georgia,serif;font-size:48px;color:#a52f54;margin:10px 0}
+h2{font-family:Georgia,serif;color:#a52f54;font-size:32px}
+.sub{color:#8a5264;font-style:italic}
+.message{text-align:left;line-height:1.75;margin:25px auto;max-width:570px}
+.highlight{background:#fff0f4;border-left:4px solid #c33f67;padding:15px;border-radius:12px}
+.primary,.choice{
+  border:0;border-radius:999px;padding:13px 24px;cursor:pointer;
+  background:#b9365d;color:#fff;box-shadow:0 8px 20px #b9365d44;
+  transition:.2s;margin:6px;
+}
+.primary:hover,.choice:hover{transform:translateY(-2px) scale(1.02)}
+.secondary{background:#ffe1ea;color:#9d3152}
+.progress{height:8px;background:#f4d6df;border-radius:20px;margin:20px 0;overflow:hidden}
+.bar{height:100%;background:#b9365d;width:0;transition:.4s}
+.choice{width:min(450px,100%);display:block;margin:10px auto}
+.result{min-height:35px;margin:14px;font-weight:bold}
+.success{color:#23834f}.wrong{color:#b52e4f}
+.gamebox{background:#fff0f4;border-radius:20px;padding:20px;margin:20px 0}
+.love-meter{height:18px;background:#f2d3dc;border-radius:20px;overflow:hidden;margin:10px 0}
+.meter-fill{height:100%;width:0;background:#d13e68;transition:.5s}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:400px;margin:20px auto}
+.tile{height:70px;border:0;border-radius:14px;background:#d95076;color:transparent;cursor:pointer;font-size:28px}
+.tile.open,.tile.matched{background:#fff;color:#b9365d}
+.final{font-size:20px;font-family:Georgia,serif;line-height:1.6}
+.small{font-size:13px;color:#966073}
+</style>
+</head>
+
+<body>
+<script>
+for(let i=0;i<18;i++){
+ const h=document.createElement("div"); h.className="bg-heart";
+ h.textContent=i%2?"♥":"♡"; h.style.left=Math.random()*100+"%";
+ h.style.fontSize=14+Math.random()*28+"px"; h.style.animationDuration=7+Math.random()*8+"s";
+ h.style.animationDelay=Math.random()*8+"s"; document.body.appendChild(h);
+}
+</script>
+
+<div class="container">
+<div class="card">
+
+<!-- INTRO -->
+<section class="screen active" id="intro">
+<div class="heart">❤️</div>
+<h1>Wait... Don't Be Mad 🥺</h1>
+<p class="sub">I made something instead of just saying “sorry”.</p>
+<p class="message">
+Baby, I know I messed up. You called me on Discord because you wanted
+to practice your interview lines with me, and I was supposed to be there...
+but your idiot decided that sleep was more important. 😭
+</p>
+<button class="primary" onclick="go(1)">Open my apology 💌</button>
+</section>
+
+<!-- APOLOGY -->
+<section class="screen" id="s1">
+<h2>Okay... I owe you an apology.</h2>
+<div class="message">
+<p>I genuinely didn't mean to fall asleep and leave you waiting.</p>
+<div class="highlight">
+I know you were counting on me to practice the interview lines with you,
+and I'm really sorry I wasn't there when you called.
+</div>
+<p>
+I should have made sure I was actually awake before sleeping.
+I'm not going to make excuses for it — I messed up. ❤️
+</p>
+<p>
+So instead of asking you to forgive me immediately...
+I have prepared a completely unnecessary little game for you. 😭
+</p>
+</div>
+<button class="primary" onclick="go(2)">Fine... show me the game 🎮</button>
+</section>
+
+<!-- GAME 1 -->
+<section class="screen" id="s2">
+<h2>Level 1: How well do you know me? 👀</h2>
+<p>Answer correctly and fill the apology meter.</p>
+<div class="love-meter"><div class="meter-fill" id="meter"></div></div>
+<div class="gamebox">
+<p><b>Question 1:</b> Why am I apologizing?</p>
+<button class="choice" onclick="answer(0,false)">I stole your food 🍕</button>
+<button class="choice" onclick="answer(0,true)">I fell asleep and missed your call 😭</button>
+<button class="choice" onclick="answer(0,false)">I forgot your birthday 💀</button>
+<div class="result" id="r0"></div>
+</div>
+</section>
+
+<!-- GAME 2 -->
+<section class="screen" id="s3">
+<h2>Level 2: One more test 😭</h2>
+<div class="gamebox">
+<p><b>What should I have done?</b></p>
+<button class="choice" onclick="answer(1,false)">Pretend Discord doesn't exist</button>
+<button class="choice" onclick="answer(1,true)">Stay awake and practice with you</button>
+<button class="choice" onclick="answer(1,false)">Blame the Wi-Fi</button>
+<div class="result" id="r1"></div>
+</div>
+</section>
+
+<!-- MEMORY GAME -->
+<section class="screen" id="s4">
+<h2>Level 3: Memory Test 🧠❤️</h2>
+<p>Match all the hearts. No cheating. 👀</p>
+<div class="memory-grid" id="grid"></div>
+<p class="result" id="memoryResult"></p>
+</section>
+
+<!-- FINAL -->
+<section class="screen" id="final">
+<div class="heart">💗</div>
+<h2>Okay... you win.</h2>
+<div class="final">
+<p>And I promise I'm not going to disappear into sleep like an idiot again. 😭</p>
+<p>
+I'm really sorry for not waking up when you called.
+I know you wanted me there to practice, and I should have been.
+</p>
+<p><b>Can I make it up to you? 🥺❤️</b></p>
+<p class="small">P.S. Your sleepy idiot loves you very, very much.</p>
+</div>
+<button class="primary" onclick="confetti()">Forgive me? ❤️</button>
+<div id="forgive" class="result"></div>
+</section>
+
+<div class="progress"><div class="bar" id="bar"></div></div>
+</div>
+</div>
+
+<script>
+let score=0;
+function go(n){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+ const id=n===1?"s1":n===2?"s2":n===3?"s3":n===4?"s4":"final";
+ document.getElementById(id).classList.add("active");
+ document.getElementById("bar").style.width=((n/5)*100)+"%";
+ if(id==="s4") startMemory();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function answer(q,correct){
+ const r=document.getElementById("r"+q);
+ if(correct){
+   r.textContent="CORRECT ❤️ You actually know me.";
+   r.className="result success";
+   score++;
+   document.getElementById("meter").style.width=(score*50)+"%";
+   setTimeout(()=>go(q===0?3:4),800);
+ }else{
+   r.textContent="Wrong 😭 Try again.";
+   r.className="result wrong";
+ }
+}
+function startMemory(){
+ const grid=document.getElementById("grid");
+ grid.innerHTML="";
+ let arr=["❤️","❤️","💗","💗","💕","💕","💖","💖"];
+ arr.sort(()=>Math.random()-.5);
+ let first=null,lock=false,matches=0;
+ arr.forEach((symbol,i)=>{
+   const b=document.createElement("button");
+   b.className="tile"; b.textContent=symbol;
+   b.onclick=()=>{
+     if(lock||b.classList.contains("open")||b.classList.contains("matched"))return;
+     b.classList.add("open");
+     if(!first){first=b;return}
+     if(first.textContent===b.textContent){
+       first.classList.add("matched"); b.classList.add("matched");
+       first=null; matches++;
+       if(matches===4){
+         document.getElementById("memoryResult").textContent="You did it! ❤️";
+         document.getElementById("memoryResult").className="result success";
+         setTimeout(()=>go(5),1000);
+       }
+     }else{
+       lock=true;
+       setTimeout(()=>{first.classList.remove("open");b.classList.remove("open");first=null;lock=false},650);
+     }
+   };
+   grid.appendChild(b);
+ });
+}
+function confetti(){
+ const f=document.getElementById("forgive");
+ f.textContent="I KNEW IT 😭❤️ Thank you. Now let's practice those interview lines!";
+ f.className="result success";
+ for(let i=0;i<35;i++){
+   const s=document.createElement("span"); s.textContent=["❤️","💗","💕","✨"][i%4];
+   s.style.position="fixed";s.style.left=Math.random()*100+"vw";s.style.top="50vh";
+   s.style.fontSize=(15+Math.random()*20)+"px";s.style.zIndex=99;
+   document.body.appendChild(s);
+   s.animate([{transform:"translateY(0)",opacity:1},{transform:`translateY(${300+Math.random()*400}px) rotate(${Math.random()*500}deg)`,opacity:0}],{duration:1000+Math.random()*1000});
+   setTimeout(()=>s.remove(),2200);
+ }
+}
+</script>
+</body>
+</html>
